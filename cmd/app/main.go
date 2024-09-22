@@ -1,20 +1,25 @@
 package main
 
 import (
-	"TodoList/internal/db"
+	"TodoList/config"
+	"TodoList/internal/database"
+	"TodoList/internal/server"
 	"log"
 )
 
 func main() {
 	var err error
 	// Init Config
-
-	// Init DataBase
-	if err = db.InitDb(); err != nil {
+	cfg, err := config.InitCfg()
+	if err != nil {
 		log.Fatal("Error init database:", err)
 	}
 
-	// Init Handlers
+	// Init DataBase
+	if err = database.InitDb(cfg); err != nil {
+		log.Fatal("Error init database:", err)
+	}
 
 	// Run App
+	server.Run(cfg)
 }
