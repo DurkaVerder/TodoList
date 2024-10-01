@@ -13,8 +13,8 @@ type TaskController struct {
 	TaskService *service.TaskService
 }
 
-func (taskController *TaskController) GetAllTasks(ctx echo.Context) error {
-	tasks, err := taskController.TaskService.GetAllTask(ctx)
+func (c *TaskController) GetAllTasks(ctx echo.Context) error {
+	tasks, err := c.TaskService.GetAllTask(ctx)
 	if err != nil {
 		//Render error
 		return err
@@ -22,8 +22,8 @@ func (taskController *TaskController) GetAllTasks(ctx echo.Context) error {
 	return ctx.JSON(http.StatusAccepted, tasks)
 }
 
-func (taskController *TaskController) GetTask(ctx echo.Context) error {
-	task, err := taskController.TaskService.GetTask(ctx)
+func (c *TaskController) GetTask(ctx echo.Context) error {
+	task, err := c.TaskService.GetTask(ctx)
 	if err != nil {
 		// Render error
 		return err
@@ -31,16 +31,16 @@ func (taskController *TaskController) GetTask(ctx echo.Context) error {
 	return ctx.JSON(http.StatusAccepted, task)
 }
 
-func (taskController *TaskController) AddTask(ctx echo.Context) error {
-	if err := taskController.TaskService.AddTask(ctx); err != nil {
+func (c *TaskController) AddTask(ctx echo.Context) error {
+	if err := c.TaskService.AddTask(ctx); err != nil {
 		// Render error
 		return err
 	}
 	return ctx.JSON(http.StatusOK, "Added")
 }
 
-func (taskController *TaskController) DeleteTask(ctx echo.Context) error {
-	if err := taskController.TaskService.DeleteTask(ctx); err != nil {
+func (c *TaskController) DeleteTask(ctx echo.Context) error {
+	if err := c.TaskService.DeleteTask(ctx); err != nil {
 		// Render error
 		return err
 	}
@@ -48,8 +48,8 @@ func (taskController *TaskController) DeleteTask(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, "Deleted")
 }
 
-func (taskController *TaskController) ChangeTask(ctx echo.Context) error {
-	if err := taskController.TaskService.ChangeTask(ctx); err != nil {
+func (c *TaskController) ChangeTask(ctx echo.Context) error {
+	if err := c.TaskService.ChangeTask(ctx); err != nil {
 		// Render error
 		return err
 	}

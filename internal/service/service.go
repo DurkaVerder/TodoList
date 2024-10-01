@@ -13,22 +13,26 @@ type TaskService struct {
 
 // logic layer
 
-func (taskService *TaskService) GetAllTask(ctx echo.Context) ([]model.Task, error) {
-	return nil, nil
+func (s *TaskService) GetAllTask(ctx echo.Context) ([]model.Task, error) {
+	tasks, err := s.TaskRepository.GetAllTasks(ctx.Param("userid"))
+	if err != nil {
+		return nil, err
+	}
+	return tasks, nil
 }
 
-func (taskService *TaskService) GetTask(ctx echo.Context) (model.Task, error) {
-	return model.Task{}, nil
+func (s *TaskService) GetTask(ctx echo.Context) (model.Task, error) {
+	return s.TaskRepository.GetTask(ctx.Param("taskid"))
 }
 
-func (taskService *TaskService) AddTask(ctx echo.Context) error {
+func (s *TaskService) AddTask(ctx echo.Context) error {
 	return nil
 }
 
-func (taskService *TaskService) DeleteTask(ctx echo.Context) error {
+func (s *TaskService) DeleteTask(ctx echo.Context) error {
 	return nil
 }
 
-func (taskService *TaskService) ChangeTask(ctx echo.Context) error {
+func (s *TaskService) ChangeTask(ctx echo.Context) error {
 	return nil
 }
