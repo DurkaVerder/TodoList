@@ -5,5 +5,5 @@ import (
 )
 
 func InitRouter(e *echo.Echo) {
-	
+
 }
