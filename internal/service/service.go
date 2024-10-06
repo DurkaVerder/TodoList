@@ -26,6 +26,8 @@ func (s *TaskService) GetTask(ctx echo.Context) (model.Task, error) {
 }
 
 func (s *TaskService) AddTask(ctx echo.Context) error {
+	addedTask := model.Task{} // Read from context
+	s.TaskRepository.AddTask(addedTask)
 	return nil
 }
 
