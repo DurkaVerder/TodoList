@@ -7,8 +7,8 @@ type Task struct {
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Status      string    `json:"status"`
-	CreatedAt   time.Time `json:"created_at"` // Используй time.Time вместо time.DateTime
-	DueDate     time.Time `json:"due_date"`   // Поправлено название поля
+	CreatedAt   time.Time `json:"created_at"`
+	DueDate     time.Time `json:"due_date"`
 	CreatorId   int       `json:"creator_id"`
 }
 

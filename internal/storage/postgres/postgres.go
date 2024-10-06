@@ -1,21 +1,23 @@
-package database
+package postgres
 
 import (
 	"database/sql"
 	"log"
-
-	_ "github.com/lib/pq"
 )
 
-func Init() *sql.DB {
+type PostgresRepo struct {
+	db *sql.DB
+}
+
+func (repo PostgresRepo) Init() {
+	var err error
 	open := "user=postgres password=durka dbname=TodoList sslmode=disable"
-	db, err := sql.Open("postgres", open)
+	repo.db, err = sql.Open("postgres", open)
 	if err != nil {
 		log.Fatal("Error open db: ", err)
 	}
 
-	if err = db.Ping(); err != nil {
+	if err = repo.db.Ping(); err != nil {
 		log.Fatal("Error connect db: ", err)
 	}
-	return db
 }
