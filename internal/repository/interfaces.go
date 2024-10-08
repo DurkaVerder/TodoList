@@ -3,7 +3,6 @@ package repository
 import "TodoList/internal/model"
 
 // Interface for tasks
-
 type TaskGetter interface {
 	AllTasks() ([]model.Task, error)
 	GetTask() (model.Task, error)
@@ -22,7 +21,6 @@ type TaskDeleter interface {
 }
 
 // Interface for users
-
 type UserGetter interface {
 	AllUsers() ([]model.User, error)
 	GetUser() (model.User, error)
