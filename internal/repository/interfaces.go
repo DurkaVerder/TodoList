@@ -4,7 +4,7 @@ import "TodoList/internal/model"
 
 // Interface for tasks
 type TaskGetter interface {
-	AllTasks() ([]model.Task, error)
+	AllTasks(userId int) ([]model.Task, error)
 	GetTask(taskId int) (model.Task, error)
 }
 

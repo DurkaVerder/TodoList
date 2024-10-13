@@ -12,9 +12,9 @@ func (repo PostgresRepo) AddTask(task model.Task) error {
 	return nil
 }
 
-func (repo PostgresRepo) AllTasks() ([]model.Task, error) {
-	req := "SELECT * FROM tasks"
-	rows, err := repo.db.Query(req)
+func (repo PostgresRepo) AllTasks(userId int) ([]model.Task, error) {
+	req := "SELECT * FROM tasks WHERE id = $1"
+	rows, err := repo.db.Query(req, userId)
 	if err != nil {
 		return nil, err
 	}
