@@ -3,7 +3,7 @@ package postgres
 import "TodoList/internal/model"
 
 func (repo PostgresRepo) AddTask(task model.Task) error {
-	req := "INSERT INTO tasks title, description, status, creator_id VALUES ($1, $2, $3, $4)"
+	req := "INSERT INTO (tasks title, description, status, creator_id) VALUES ($1, $2, $3, $4)"
 	_, err := repo.db.Exec(req, task.Title, task.Description, task.Status, task.CreatorId)
 	if err != nil {
 		return err
@@ -13,7 +13,7 @@ func (repo PostgresRepo) AddTask(task model.Task) error {
 }
 
 func (repo PostgresRepo) AllTasks(userId int) ([]model.Task, error) {
-	req := "SELECT * FROM tasks WHERE id = $1"
+	req := "SELECT * FROM tasks WHERE creator_id = $1"
 	rows, err := repo.db.Query(req, userId)
 	if err != nil {
 		return nil, err
@@ -29,13 +29,7 @@ func (repo PostgresRepo) AllTasks(userId int) ([]model.Task, error) {
 		tasks = append(tasks, task)
 	}
 
-	err = rows.Err()
-	if err != nil {
-		return nil, err
-	}
-
 	return tasks, nil
-
 }
 
 func (repo PostgresRepo) GetTask(taskId int) (model.Task, error) {
@@ -44,11 +38,6 @@ func (repo PostgresRepo) GetTask(taskId int) (model.Task, error) {
 
 	task := model.Task{}
 	err := row.Scan(&task.Id, &task.Title, &task.Description, &task.Status, &task.CreatedAt, &task.DueDate, &task.CreatorId)
-	if err != nil {
-		return model.Task{}, err
-	}
-
-	err = row.Err()
 	if err != nil {
 		return model.Task{}, err
 	}
