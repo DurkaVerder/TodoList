@@ -8,17 +8,17 @@ type UserService interface {
 }
 
 func (s *ServiceManager) Login() error {
-
+	return nil
 }
 
 func (s *ServiceManager) Register() error {
-
+	return nil
 }
 
 func (s *ServiceManager) GetUser() error {
-
+	return nil
 }
 
 func (s *ServiceManager) UpdateUser() error {
-
+	return nil
 }

@@ -8,17 +8,17 @@ type TaskService interface {
 }
 
 func (s *ServiceManager) CreateTask() error {
-
+	return nil
 }
 
 func (s *ServiceManager) GetTasks() error {
-
+	return nil
 }
 
 func (s *ServiceManager) UpdateTask() error {
-
+	return nil
 }
 
 func (s *ServiceManager) DestroyTask() error {
-
+	return nil
 }
