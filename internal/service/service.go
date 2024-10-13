@@ -1,41 +1,18 @@
 package service
 
 import (
-	"github.com/labstack/echo"
+	"TodoList/internal/repository"
 )
 
 type Service interface {
-	TaskManager
-	UserManager
+	UserService
+	TaskService
 }
 
-type TaskManager interface {
-	AllTask
-	GetTask
-	AddTask
-	UpdateTask
-	DeleteTask
+type ServiceManager struct {
+	repo repository.Repository
 }
 
-type AllTask interface {
-	GetAllTasks(ctx echo.Context) error
-}
-
-type GetTask interface {
-	GetTask(ctx echo.Context) error
-}
-
-type AddTask interface {
-	AddTask(ctx echo.Context) error
-}
-
-type UpdateTask interface {
-	UpdateTask(ctx echo.Context) error
-}
-
-type DeleteTask interface {
-	DeleteTask(ctx echo.Context) error
-}
-
-type UserManager interface {
+func (s *ServiceManager) NewService(repo repository.Repository) *ServiceManager {
+	return &ServiceManager{repo: repo}
 }

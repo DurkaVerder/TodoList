@@ -3,7 +3,7 @@ package postgres
 import "TodoList/internal/model"
 
 func (repo PostgresRepo) AddUser(user model.User) error {
-	req := "INSERT INTO users name, login, password VALUES ($1, $2, $3)"
+	req := "INSERT INTO users (name, login, password) VALUES ($1, $2, $3)"
 	_, err := repo.db.Exec(req, user.Name, user.Login, user.Password)
 	if err != nil {
 		return err
@@ -55,7 +55,7 @@ func (repo PostgresRepo) GetUser(userId int) (model.User, error) {
 	return user, nil
 }
 
-func (repo PostgresRepo) ChangeUser(userId int, newData model.User) error {
+func (repo PostgresRepo) UpdateUser(userId int, newData model.User) error {
 	req := "UPDATE users SET name = $1, login = $2, password = $3 WHERE id = $4"
 	_, err := repo.db.Exec(req, newData.Name, newData.Login, newData.Password, userId)
 	if err != nil {

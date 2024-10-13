@@ -3,7 +3,7 @@ package postgres
 import "TodoList/internal/model"
 
 func (repo PostgresRepo) AddTask(task model.Task) error {
-	req := "INSERT INTO (tasks title, description, status, creator_id) VALUES ($1, $2, $3, $4)"
+	req := "INSERT INTO tasks (title, description, status, creator_id) VALUES ($1, $2, $3, $4)"
 	_, err := repo.db.Exec(req, task.Title, task.Description, task.Status, task.CreatorId)
 	if err != nil {
 		return err
@@ -45,7 +45,7 @@ func (repo PostgresRepo) GetTask(taskId int) (model.Task, error) {
 	return task, nil
 }
 
-func (repo PostgresRepo) ChangeTask(taskId int, newData model.Task) error {
+func (repo PostgresRepo) UpdateTask(taskId int, newData model.Task) error {
 	req := "UPDATE tasks SET title = $1, description = $2, status = $3, due_date= $4 WHERE id = $5"
 	_, err := repo.db.Exec(req, newData.Title, newData.Description, newData.Status, newData.DueDate, taskId)
 	if err != nil {
