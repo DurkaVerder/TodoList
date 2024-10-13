@@ -13,6 +13,6 @@ type ServiceManager struct {
 	repo repository.Repository
 }
 
-func (s *ServiceManager) NewService(repo repository.Repository) *ServiceManager {
+func NewService(repo repository.Repository) *ServiceManager {
 	return &ServiceManager{repo: repo}
 }

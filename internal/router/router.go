@@ -6,8 +6,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-func InitRouter(e *echo.Echo) {
-	var controller controller.Controller = controller.ControllerManager
+func InitRouter(e *echo.Echo, controller controller.Controller) {
 
 	e.GET("/api/task/:id", controller.HandleGetTask)
 	e.GET("/api/tasks", controller.HandleGetAllTasks)

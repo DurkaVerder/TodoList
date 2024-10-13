@@ -9,19 +9,21 @@ type PostgresRepo struct {
 	db *sql.DB
 }
 
-func (repo *PostgresRepo) NewPostgresRepo() *PostgresRepo {
-	return &PostgresRepo{db: repo.init()}
+func NewPostgresRepo() *PostgresRepo {
+	return &PostgresRepo{db: initDataBase()}
 }
 
-func (repo *PostgresRepo) init() *sql.DB {
+func initDataBase() *sql.DB {
+	var err error
 	open := "user=postgres password=durka dbname=TodoList sslmode=disable"
 	db, err := sql.Open("postgres", open)
 	if err != nil {
 		log.Fatal("Error open db: ", err)
 	}
 
-	if err = repo.db.Ping(); err != nil {
+	if err = db.Ping(); err != nil {
 		log.Fatal("Error connect db: ", err)
 	}
+
 	return db
 }

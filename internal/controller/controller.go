@@ -23,6 +23,6 @@ type ControllerManager struct {
 	Service service.Service
 }
 
-func (c *ControllerManager) NewController(s service.Service) *ControllerManager {
+func NewController(s service.Service) *ControllerManager {
 	return &ControllerManager{Service: s}
 }
