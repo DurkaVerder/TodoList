@@ -12,29 +12,17 @@ func (repo PostgresRepo) AddUser(user model.User) error {
 	return nil
 }
 
-func (repo PostgresRepo) AllUsers() ([]model.User, error) {
-	req := "SELECT * FROM users"
-	rows, err := repo.db.Query(req)
+func (repo PostgresRepo) GetIdUser(login, password string) (int, error) {
+	req := "SELECT id FROM users WHERE login = $1 AND password = $2"
+	rows := repo.db.QueryRow(req, login, password)
+
+	userId := 0
+	err := rows.Scan(&userId)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 
-	users := []model.User{}
-	for rows.Next() {
-		user := model.User{}
-		err = rows.Scan(&user.Id, &user.Name, &user.Login, &user.Password)
-		if err != nil {
-			return nil, err
-		}
-		users = append(users, user)
-	}
-
-	err = rows.Err()
-	if err != nil {
-		return nil, err
-	}
-
-	return users, nil
+	return userId, nil
 }
 
 func (repo PostgresRepo) GetUser(userId int) (model.User, error) {
