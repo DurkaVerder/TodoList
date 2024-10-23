@@ -6,7 +6,7 @@ import (
 )
 
 type Cookie interface {
-	AddUserIdInCookie(ctx echo.Context, userId int) error
+	AddJWTInCookie(ctx echo.Context) error
 }
 
 type CookieManager struct {
