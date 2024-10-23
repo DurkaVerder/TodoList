@@ -8,10 +8,10 @@ type Repository interface {
 }
 
 type UserRepository interface {
-	AllUsers() ([]model.User, error)
-	GetUser(userId int) (model.User, error)
-	AddUser(user model.User) error
-	UpdateUser(userId int, newData model.User) error
+	GetByUserData(data model.EnterDataUser) (model.User, error)
+	GetByUserId(userId int) (model.User, error)
+	AddUser(data model.EnterDataUser) error
+	UpdateUser(userId int, newData model.EnterDataUser) error
 	DeleteUser(userId int) error
 }
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"TodoList/internal/controller"
+	"TodoList/internal/cookie"
 	"TodoList/internal/repository/postgres"
 	"TodoList/internal/router"
 	"TodoList/internal/service"
@@ -16,8 +17,11 @@ func main() {
 	// Init service
 	service := service.NewService(postgresRepository)
 
+	//Init cookie
+	cookie := cookie.NewCookie()
+
 	// Init controller
-	controller := controller.NewController(service)
+	controller := controller.NewController(service, cookie)
 
 	// Init server
 	e := echo.New()

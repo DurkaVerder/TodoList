@@ -18,3 +18,15 @@ type User struct {
 	Login    string `json:"login"`
 	Password string `json:"password"`
 }
+
+type EnterDataUser struct {
+	Name     string `json:"name"`
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
+type EnterDataTask struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+}
