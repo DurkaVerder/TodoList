@@ -16,19 +16,38 @@ type UserController interface {
 }
 
 func (c *ControllerManager) HandleLogin(ctx echo.Context) error {
-	return nil
+	data := model.EnterDataUser{}
+
+	if err := ctx.Bind(&data); err != nil {
+		return ctx.JSON(http.StatusBadRequest, "Invalid json format")
+	}
+
+	if err := c.Service.Login(data); err != nil {
+		return ctx.JSON(http.StatusInternalServerError, "Error login user")
+	}
+
+	userId, err := c.Service.GetIdUser(data)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, "Error get id user")
+	}
+
+	if err := c.Cookie.AddUserIdInCookie(ctx, userId); err != nil {
+		return ctx.JSON(http.StatusInternalServerError, "Error create cookie")
+	}
+
+	return ctx.JSON(http.StatusOK, "login user")
 }
 
 func (c *ControllerManager) HandleRegister(ctx echo.Context) error {
-	newUser := model.User{}
-	if err := ctx.Bind(&newUser); err != nil {
+	data := model.EnterDataUser{}
+	if err := ctx.Bind(&data); err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Invalid json format")
 	}
-	if err := c.Service.Register(newUser); err != nil {
+	if err := c.Service.Register(data); err != nil {
 		return ctx.JSON(http.StatusInternalServerError, "Error add user")
 	}
 
-	userId, err := c.Service.GetIdUser(newUser)
+	userId, err := c.Service.GetIdUser(data)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, "Error get id user")
 	}

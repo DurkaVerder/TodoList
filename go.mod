@@ -7,6 +7,7 @@ toolchain go1.23.2
 require (
 	github.com/gorilla/sessions v1.4.0
 	github.com/labstack/echo v3.3.10+incompatible
+	github.com/lib/pq v1.10.9
 )
 
 require (

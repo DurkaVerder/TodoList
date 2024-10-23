@@ -2,9 +2,9 @@ package postgres
 
 import "TodoList/internal/model"
 
-func (repo PostgresRepo) AddUser(user model.User) error {
+func (repo PostgresRepo) AddUser(data model.EnterDataUser) error {
 	req := "INSERT INTO users (name, login, password) VALUES ($1, $2, $3)"
-	_, err := repo.db.Exec(req, user.Name, user.Login, user.Password)
+	_, err := repo.db.Exec(req, data.Name, data.Login, data.Password)
 	if err != nil {
 		return err
 	}
@@ -12,9 +12,9 @@ func (repo PostgresRepo) AddUser(user model.User) error {
 	return nil
 }
 
-func (repo PostgresRepo) GetIdUser(login, password string) (int, error) {
+func (repo PostgresRepo) GetIdUser(data model.EnterDataUser) (int, error) {
 	req := "SELECT id FROM users WHERE login = $1 AND password = $2"
-	rows := repo.db.QueryRow(req, login, password)
+	rows := repo.db.QueryRow(req, data.Login, data.Password)
 
 	userId := 0
 	err := rows.Scan(&userId)
@@ -25,9 +25,9 @@ func (repo PostgresRepo) GetIdUser(login, password string) (int, error) {
 	return userId, nil
 }
 
-func (repo PostgresRepo) GetUser(userId int) (model.User, error) {
-	req := "SELECT * FROM users WHERE id = $1"
-	row := repo.db.QueryRow(req, userId)
+func (repo PostgresRepo) GetUser(data model.EnterDataUser) (model.User, error) {
+	req := "SELECT * FROM users WHERE login = $1 AND password = $2"
+	row := repo.db.QueryRow(req, data.Login, data.Password)
 
 	user := model.User{}
 	err := row.Scan(&user.Id, &user.Name, &user.Login, &user.Password)

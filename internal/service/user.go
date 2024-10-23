@@ -5,19 +5,20 @@ import (
 )
 
 type UserService interface {
-	Login(user model.User) error
-	Register(newUser model.User) error
+	Login(data model.EnterDataUser) error
+	Register(data model.EnterDataUser) error
 	GetUser() error
 	UpdateUser() error
-	GetIdUser(user model.User) (int, error)
+	GetIdUser(data model.EnterDataUser) (int, error)
 }
 
-func (s *ServiceManager) Login(user model.User) error {
+func (s *ServiceManager) Login(data model.EnterDataUser) error {
+
 	return nil
 }
 
-func (s *ServiceManager) Register(newUser model.User) error {
-	if err := s.repo.AddUser(newUser); err != nil {
+func (s *ServiceManager) Register(data model.EnterDataUser) error {
+	if err := s.repo.AddUser(data); err != nil {
 		return err
 	}
 
@@ -32,8 +33,8 @@ func (s *ServiceManager) UpdateUser() error {
 	return nil
 }
 
-func (s *ServiceManager) GetIdUser(user model.User) (int, error) {
-	userId, err := s.repo.GetIdUser(user.Login, user.Password)
+func (s *ServiceManager) GetIdUser(data model.EnterDataUser) (int, error) {
+	userId, err := s.repo.GetIdUser(data)
 	if err != nil {
 		return -1, err
 	}
