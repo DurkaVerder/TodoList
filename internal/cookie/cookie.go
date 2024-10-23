@@ -6,7 +6,8 @@ import (
 )
 
 type Cookie interface {
-	AddJWTInCookie(ctx echo.Context) error
+	SaveJWTInCookie(token string, ctx echo.Context) error
+	GetJWTFromCookie(ctx echo.Context) (string, error)
 }
 
 type CookieManager struct {
@@ -16,5 +17,3 @@ type CookieManager struct {
 func NewCookie() Cookie {
 	return CookieManager{sessions.NewCookieStore([]byte("key"))}
 }
-
-

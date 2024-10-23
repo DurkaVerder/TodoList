@@ -17,14 +17,17 @@ type UserController interface {
 
 func (c *ControllerManager) HandleLogin(ctx echo.Context) error {
 	data := model.EnterDataUser{}
-
 	if err := ctx.Bind(&data); err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Invalid json format")
 	}
 
-	ok, err := c.Service.Login(data)
-	if err != nil || !ok {
+	token, err := c.Service.Login(data)
+	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, "Error login user")
+	}
+
+	if err := c.Cookie.SaveJWTInCookie(token, ctx); err != nil {
+		return ctx.JSON(http.StatusOK, "error create JWT")
 	}
 
 	return ctx.JSON(http.StatusOK, "login user")
@@ -35,10 +38,15 @@ func (c *ControllerManager) HandleRegister(ctx echo.Context) error {
 	if err := ctx.Bind(&data); err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Invalid json format")
 	}
-	if err := c.Service.Register(data); err != nil {
+
+	token, err := c.Service.Register(data)
+	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, "Error add user")
 	}
 
+	if err := c.Cookie.SaveJWTInCookie(token, ctx); err != nil {
+		return ctx.JSON(http.StatusOK, "error create JWT")
+	}
 	return ctx.JSON(http.StatusOK, "Added user")
 }
 

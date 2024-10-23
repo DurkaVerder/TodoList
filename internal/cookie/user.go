@@ -1,18 +1,33 @@
 package cookie
 
-import "github.com/labstack/echo"
+import (
+	"net/http"
+	"time"
 
-func (c CookieManager) AddJWTInCookie(ctx echo.Context) error {
-	session, err := c.store.Get(ctx.Request(), "cookie-todolist")
-	if err != nil {
-		return err
-	}
+	"github.com/labstack/echo"
+)
 
-	// Other logical
+func (c CookieManager) SaveJWTInCookie(token string, ctx echo.Context) error {
 
-	if err := session.Save(ctx.Request(), ctx.Response()); err != nil {
-		return err
-	}
+	cookie := new(http.Cookie)
+	cookie.Name = "jwt-token"
+	cookie.Value = token
+	cookie.HttpOnly = true                          // Запрет доступа к cookie через JavaScript
+	cookie.Expires = time.Now().Add(72 * time.Hour) // Устанавливаем время истечения cookie
+	cookie.Path = "/"                               // Cookie будет доступно для всех путей сайта
+	cookie.SameSite = http.SameSiteLaxMode          // Устанавливаем политику SameSite для предотвращения CSRF
+	cookie.Secure = false                           // Используется только через HTTPS
+
+	ctx.SetCookie(cookie)
 
 	return nil
+}
+
+func (c CookieManager) GetJWTFromCookie(ctx echo.Context) (string, error) {
+	Cookie, err := ctx.Cookie("jwt-token")
+	if err != nil {
+		return "", err
+	}
+
+	return Cookie.Value, nil
 }
