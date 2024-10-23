@@ -10,6 +10,7 @@ func InitRouter(e *echo.Echo, controller controller.Controller) {
 
 	e.GET("/api/task/:id", controller.HandleGetTask)
 	e.GET("/api/tasks", controller.HandleGetAllTasks)
+	e.GET("/api/profile", controller.HandleProfileUser)
 	e.POST("/api/addtask", controller.HandleCreateTask)
 	e.POST("/api/login", controller.HandleLogin)
 	e.POST("/api/register", controller.HandleRegister)

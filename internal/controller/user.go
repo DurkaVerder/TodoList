@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"TodoList/internal/jwt"
 	"TodoList/internal/model"
 	"net/http"
 
@@ -10,7 +11,7 @@ import (
 type UserController interface {
 	HandleLogin(ctx echo.Context) error
 	HandleRegister(ctx echo.Context) error
-	HandleGetUser(ctx echo.Context) error
+	HandleProfileUser(ctx echo.Context) error
 	HandleUpdateUser(ctx echo.Context) error
 	HandleDeleteUser(ctx echo.Context) error
 }
@@ -50,11 +51,30 @@ func (c *ControllerManager) HandleRegister(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, "Added user")
 }
 
-func (c *ControllerManager) HandleGetUser(ctx echo.Context) error {
-	return nil
+func (c *ControllerManager) HandleProfileUser(ctx echo.Context) error {
+	token, err := c.Cookie.GetJWTFromCookie(ctx)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, "Error get JWT")
+	}
+
+	claims, err := jwt.ValidateJWT(token)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, "Error validate JWT")
+	}
+	userIdFloat, ok := claims["userId"].(float64)
+	if !ok {
+		return ctx.JSON(http.StatusInternalServerError, "Invalid userID type")
+	}
+	userId := int(userIdFloat)
+	user, err := c.Service.GetUser(userId)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, "Error get user")
+	}
+	return ctx.JSON(http.StatusOK, user)
 }
 
 func (c *ControllerManager) HandleUpdateUser(ctx echo.Context) error {
+
 	return nil
 }
 

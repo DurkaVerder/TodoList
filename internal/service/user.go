@@ -8,12 +8,12 @@ import (
 type UserService interface {
 	Login(data model.EnterDataUser) (string, error)
 	Register(data model.EnterDataUser) (string, error)
-	GetUser() error
+	GetUser(userId int) (model.User, error)
 	UpdateUser() error
 }
 
 func (s *ServiceManager) Login(data model.EnterDataUser) (string, error) {
-	user, err := s.repo.GetUser(data)
+	user, err := s.repo.GetByUserData(data)
 	if err != nil {
 		return "", err
 	}
@@ -37,8 +37,12 @@ func (s *ServiceManager) Register(data model.EnterDataUser) (string, error) {
 	return s.Login(data)
 }
 
-func (s *ServiceManager) GetUser() error {
-	return nil
+func (s *ServiceManager) GetUser(userId int) (model.User, error) {
+	user, err := s.repo.GetByUserId(userId)
+	if err != nil {
+		return model.User{}, err
+	}
+	return user, nil
 }
 
 func (s *ServiceManager) UpdateUser() error {

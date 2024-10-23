@@ -12,7 +12,25 @@ func (repo PostgresRepo) AddUser(data model.EnterDataUser) error {
 	return nil
 }
 
-func (repo PostgresRepo) GetUser(data model.EnterDataUser) (model.User, error) {
+func (repo PostgresRepo) GetByUserId(userId int) (model.User, error) {
+	req := "SELECT * FROM users WHERE id = $1"
+	row := repo.db.QueryRow(req, userId)
+
+	user := model.User{}
+	err := row.Scan(&user.Id, &user.Name, &user.Login, &user.Password)
+	if err != nil {
+		return model.User{}, err
+	}
+
+	err = row.Err()
+	if err != nil {
+		return model.User{}, err
+	}
+
+	return user, nil
+}
+
+func (repo PostgresRepo) GetByUserData(data model.EnterDataUser) (model.User, error) {
 	req := "SELECT * FROM users WHERE login = $1 AND password = $2"
 	row := repo.db.QueryRow(req, data.Login, data.Password)
 
