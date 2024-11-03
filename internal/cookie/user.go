@@ -1,6 +1,7 @@
 package cookie
 
 import (
+	"TodoList/internal/jwt"
 	"net/http"
 	"time"
 
@@ -30,4 +31,23 @@ func (c CookieManager) GetJWTFromCookie(ctx echo.Context) (string, error) {
 	}
 
 	return Cookie.Value, nil
+}
+
+func (c CookieManager) GetUserIdByCookie(ctx echo.Context) (int, error) {
+	token, err := c.GetJWTFromCookie(ctx)
+	if err != nil {
+		return -1, err
+	}
+
+	claims, err := jwt.ValidateJWT(token)
+	if err != nil {
+		return -1, err
+	}
+	userIdFloat, ok := claims["userId"].(float64)
+	if !ok {
+		return -1, err
+	}
+	userId := int(userIdFloat)
+
+	return userId, nil
 }

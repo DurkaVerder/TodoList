@@ -9,7 +9,9 @@ type UserService interface {
 	Login(data model.EnterDataUser) (string, error)
 	Register(data model.EnterDataUser) (string, error)
 	GetUser(userId int) (model.User, error)
-	UpdateUser() error
+	UpdateUserPassword(userId int, password string) error
+	UpdateUserName(userId int, name string) error
+	DeleteUser(userId int) error
 }
 
 func (s *ServiceManager) Login(data model.EnterDataUser) (string, error) {
@@ -45,6 +47,23 @@ func (s *ServiceManager) GetUser(userId int) (model.User, error) {
 	return user, nil
 }
 
-func (s *ServiceManager) UpdateUser() error {
+func (s *ServiceManager) UpdateUserPassword(userId int, password string) error {
+	if err := s.repo.UpdateUserPassword(userId, password); err != nil {
+		return nil
+	}
+	return nil
+}
+
+func (s *ServiceManager) UpdateUserName(userId int, name string) error {
+	if err := s.repo.UpdateUserName(userId, name); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *ServiceManager) DeleteUser(userId int) error {
+	if err := s.repo.DeleteUser(userId); err != nil {
+		return err
+	}
 	return nil
 }

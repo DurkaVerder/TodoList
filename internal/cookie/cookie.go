@@ -8,6 +8,7 @@ import (
 type Cookie interface {
 	SaveJWTInCookie(token string, ctx echo.Context) error
 	GetJWTFromCookie(ctx echo.Context) (string, error)
+	GetUserIdByCookie(ctx echo.Context) (int, error)
 }
 
 type CookieManager struct {

@@ -11,7 +11,8 @@ type UserRepository interface {
 	GetByUserData(data model.EnterDataUser) (model.User, error)
 	GetByUserId(userId int) (model.User, error)
 	AddUser(data model.EnterDataUser) error
-	UpdateUser(userId int, newData model.EnterDataUser) error
+	UpdateUserPassword(userId int, password string) error
+	UpdateUserName(userId int, name string) error
 	DeleteUser(userId int) error
 }
 

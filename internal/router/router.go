@@ -15,7 +15,8 @@ func InitRouter(e *echo.Echo, controller controller.Controller) {
 	e.POST("/api/login", controller.HandleLogin)
 	e.POST("/api/register", controller.HandleRegister)
 	e.PUT("/api/task/:id", controller.HandleUpdateTask)
-	e.PUT("/api/user/:id", controller.HandleUpdateUser)
+	e.PUT("/api/profile/password", controller.HandleUpdateUserPassword)
+	e.PUT("/api/profile/name", controller.HandleUpdateUserName)
 	e.DELETE("/api/deleteuser/:id", controller.HandleDeleteUser)
 	e.DELETE("/api/deletetask/:id", controller.HandleDeleteTask)
 }

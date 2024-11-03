@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"TodoList/internal/jwt"
 	"TodoList/internal/model"
 	"net/http"
 
@@ -14,6 +13,8 @@ type UserController interface {
 	HandleProfileUser(ctx echo.Context) error
 	HandleUpdateUser(ctx echo.Context) error
 	HandleDeleteUser(ctx echo.Context) error
+	HandleUpdateUserPassword(ctx echo.Context) error
+	HandleUpdateUserName(ctx echo.Context) error
 }
 
 func (c *ControllerManager) HandleLogin(ctx echo.Context) error {
@@ -52,20 +53,12 @@ func (c *ControllerManager) HandleRegister(ctx echo.Context) error {
 }
 
 func (c *ControllerManager) HandleProfileUser(ctx echo.Context) error {
-	token, err := c.Cookie.GetJWTFromCookie(ctx)
+
+	userId, err := c.Cookie.GetUserIdByCookie(ctx)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, "Error get JWT")
+		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	claims, err := jwt.ValidateJWT(token)
-	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, "Error validate JWT")
-	}
-	userIdFloat, ok := claims["userId"].(float64)
-	if !ok {
-		return ctx.JSON(http.StatusInternalServerError, "Invalid userID type")
-	}
-	userId := int(userIdFloat)
 	user, err := c.Service.GetUser(userId)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, "Error get user")
@@ -73,11 +66,49 @@ func (c *ControllerManager) HandleProfileUser(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, user)
 }
 
-func (c *ControllerManager) HandleUpdateUser(ctx echo.Context) error {
+func (c *ControllerManager) HandleUpdateUserPassword(ctx echo.Context) error {
+	userId, err := c.Cookie.GetUserIdByCookie(ctx)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+	password := ""
+	if err := ctx.Bind(&password); err != nil {
+		return ctx.JSON(http.StatusBadRequest, "Invalid data type")
+	}
 
-	return nil
+	if err := c.Service.UpdateUserPassword(userId, password); err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return ctx.JSON(http.StatusOK, "")
+}
+
+func (c *ControllerManager) HandleUpdateUserName(ctx echo.Context) error {
+	userId, err := c.Cookie.GetUserIdByCookie(ctx)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	name := ""
+	if err := ctx.Bind(&name); err != nil {
+		return ctx.JSON(http.StatusBadRequest, "Invalid data type")
+	}
+
+	if err := c.Service.UpdateUserPassword(userId, name); err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return ctx.JSON(http.StatusOK, "")
 }
 
 func (c *ControllerManager) HandleDeleteUser(ctx echo.Context) error {
-	return nil
+	userId, err := c.Cookie.GetUserIdByCookie(ctx)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	if err := c.Service.DeleteUser(userId); err != nil {
+		return ctx.JSON(http.StatusInternalServerError, "Error delete account")
+	}
+	// Delete cookie
+	return ctx.JSON(http.StatusAccepted, "Deleted")
 }
