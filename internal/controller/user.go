@@ -11,10 +11,9 @@ type UserController interface {
 	HandleLogin(ctx echo.Context) error
 	HandleRegister(ctx echo.Context) error
 	HandleProfileUser(ctx echo.Context) error
-	HandleUpdateUser(ctx echo.Context) error
-	HandleDeleteUser(ctx echo.Context) error
 	HandleUpdateUserPassword(ctx echo.Context) error
 	HandleUpdateUserName(ctx echo.Context) error
+	HandleDeleteUser(ctx echo.Context) error
 }
 
 func (c *ControllerManager) HandleLogin(ctx echo.Context) error {
