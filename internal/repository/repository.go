@@ -17,7 +17,7 @@ type UserRepository interface {
 }
 
 type TaskRepository interface {
-	AllTasks(userId int) ([]model.Task, error)
+	AllTasksByUser(userId int) ([]model.Task, error)
 	GetTask(taskId int) (model.Task, error)
 	AddTask(task model.Task) error
 	UpdateTask(taskId int, newData model.Task) error
