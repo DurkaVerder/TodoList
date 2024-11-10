@@ -48,9 +48,19 @@ func (repo PostgresRepo) GetByUserData(data model.EnterDataUser) (model.User, er
 	return user, nil
 }
 
-func (repo PostgresRepo) UpdateUser(userId int, newData model.EnterDataUser) error {
-	req := "UPDATE users SET name = $1, login = $2, password = $3 WHERE id = $4"
-	_, err := repo.db.Exec(req, newData.Name, newData.Login, newData.Password, userId)
+func (repo PostgresRepo) UpdateUserName(userId int, name string) error {
+	req := "UPDATE users SET name = $1 WHERE id = $2"
+	_, err := repo.db.Exec(req, name, userId)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo PostgresRepo) UpdateUserPassword(userId int, password string) error {
+	req := "UPDATE users SET password = $1 WHERE id = $2"
+	_, err := repo.db.Exec(req, password, userId)
 	if err != nil {
 		return err
 	}

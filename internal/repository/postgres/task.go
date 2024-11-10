@@ -12,7 +12,7 @@ func (repo PostgresRepo) AddTask(task model.Task) error {
 	return nil
 }
 
-func (repo PostgresRepo) AllTasks(userId int) ([]model.Task, error) {
+func (repo PostgresRepo) AllTasksByUser(userId int) ([]model.Task, error) {
 	req := "SELECT * FROM tasks WHERE creator_id = $1"
 	rows, err := repo.db.Query(req, userId)
 	if err != nil {
