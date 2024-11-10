@@ -70,12 +70,12 @@ func (c *ControllerManager) HandleUpdateUserPassword(ctx echo.Context) error {
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}
-	password := ""
-	if err := ctx.Bind(&password); err != nil {
+	data := model.EnterDataUser{}
+	if err := ctx.Bind(&data); err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Invalid data type")
 	}
 
-	if err := c.Service.UpdateUserPassword(userId, password); err != nil {
+	if err := c.Service.UpdateUserPassword(userId, data.Password); err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return ctx.JSON(http.StatusOK, "")
@@ -87,12 +87,12 @@ func (c *ControllerManager) HandleUpdateUserName(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	name := ""
-	if err := ctx.Bind(&name); err != nil {
+	data := model.EnterDataUser{}
+	if err := ctx.Bind(&data); err != nil {
 		return ctx.JSON(http.StatusBadRequest, "Invalid data type")
 	}
 
-	if err := c.Service.UpdateUserPassword(userId, name); err != nil {
+	if err := c.Service.UpdateUserPassword(userId, data.Name); err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err.Error())
 	}
 

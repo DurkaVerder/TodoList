@@ -22,7 +22,7 @@ func (c *ControllerManager) HandleGetAllTasks(ctx echo.Context) error {
 	}
 	tasks, err := c.Service.GetTasks(userId)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, "Error get tasks")
+		return ctx.JSON(http.StatusInternalServerError, "Error get tasks "+err.Error())
 	}
 	return ctx.JSON(http.StatusAccepted, tasks)
 }

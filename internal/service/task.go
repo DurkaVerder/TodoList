@@ -58,6 +58,6 @@ func (s *ServiceManager) compareAndChangeData(data model.EnterDataTask, task mod
 		task.Description = data.Description
 	}
 	time := time.Now()
-	task.DueDate = time
+	task.DueDate = &time
 	return task
 }
