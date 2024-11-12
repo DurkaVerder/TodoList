@@ -29,3 +29,8 @@ func initDataBase() *sql.DB {
 
 	return db
 }
+
+func (r *PostgresRepo) CheckConnect() error {
+	err := r.db.Ping()
+	return err
+}

@@ -1,6 +1,9 @@
 package postgres
 
-import "TodoList/internal/model"
+import (
+	"TodoList/internal/model"
+	"log"
+)
 
 func (repo PostgresRepo) AddTask(task model.Task) error {
 	req := "INSERT INTO tasks (title, description, status, creator_id) VALUES ($1, $2, $3, $4)"
@@ -14,6 +17,7 @@ func (repo PostgresRepo) AddTask(task model.Task) error {
 
 func (repo PostgresRepo) AllTasksByUser(userId int) ([]model.Task, error) {
 	req := "SELECT * FROM tasks WHERE creator_id = $1"
+	log.Println("В реальной функции лог. Сейчас id user = ", userId)
 	rows, err := repo.db.Query(req, userId)
 	if err != nil {
 		return nil, err
